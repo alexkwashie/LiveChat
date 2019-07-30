@@ -1,7 +1,5 @@
 //adding new chat documents
 
-// setting up a reat-time listener to get new chats
-
 //updating the username
 
 //updating the room
@@ -10,13 +8,15 @@ class Chatroom{
     constructor(room, username){
         this.room = room;
         this.username = username;
-        this.chats = db.collection('chats');
+        this.chats = db.collection('chats'); //database to connect to
     }
 
     //because it might take some time to add the chat data to the database, will use async
     async addChat(message){
+
         //format chat object
         const now = new Date();
+
         const chat = {
             message,
             room: this.room,
@@ -25,12 +25,31 @@ class Chatroom{
         };
 
         //Add data to firebase
-        const responds = await  this.chats.add(chat);
-        return responds;
+        const response = await this.chats.add(chat);
+        return response;
     }
+
+    // set-up a real-time listener to get new chats
+    getChats(callback){
+        this.chats
+            .onSnapshot(snapshot =>{
+                snapshot.docChanges().forEach(change =>{ //gets every chnage on the documents
+                    if(change.type === 'added'){
+                        callback(change.doc.data())//get the documents data from the database
+                    }
+
+                });
+            });
+    }
+
+
+
 }
 
 
 const chat1 = new Chatroom('gaming', 'kev');
 
-console.log(chat1);
+//create new chat
+chat1.getChats(data =>{
+    console.log(data);
+});
