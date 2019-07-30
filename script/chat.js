@@ -1,9 +1,10 @@
-//adding new chat documents
+
 
 //updating the username
 
 //updating the room
 
+//#Step 1-adding new chat documents
 class Chatroom{
     constructor(room, username){
         this.room = room;
@@ -29,9 +30,11 @@ class Chatroom{
         return response;
     }
 
-    // set-up a real-time listener to get new chats
+    // //#Step2- set-up a real-time listener to get new chats
     getChats(callback){
         this.chats
+        .where('room', '==', 'gaming') //complex querys - this is to query only specified data
+        .orderBy('created_at')//this orders the data by time etc
             .onSnapshot(snapshot =>{
                 snapshot.docChanges().forEach(change =>{ //gets every chnage on the documents
                     if(change.type === 'added'){
