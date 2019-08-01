@@ -64,5 +64,27 @@ class Chatroom{
 }
 
 
+/*
+//Test code:
+
+//Assign new memeber
+const chat1 = new Chatroom('gaming', 'kev');
+
+//create new chat
+chat1.getChats(data =>{
+    console.log(data);
+});
 
 
+//Switch to another user -: assume it takes 3 secs
+setTimeout(() => {
+    chat1.UpdateRoom('general');
+    chat1.UpdateName('Keno');
+
+    chat1.getChats((data) =>{
+        console.log(data);
+    });
+    chat1.addChat('Hello Mate')
+}, 3000)
+
+*/
