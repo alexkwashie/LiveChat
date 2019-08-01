@@ -10,6 +10,7 @@ class Chatroom{
         this.room = room;
         this.username = username;
         this.chats = db.collection('chats'); //database to connect to
+        this.unsub; //this is going to be used to unsubcribe the getChats() from the set 'chat1' on line 64
     }
 
     //because it might take some time to add the chat data to the database, will use async
@@ -30,29 +31,38 @@ class Chatroom{
         return response;
     }
 
+
+
     // //#Step2- set-up a real-time listener to get new chats
     getChats(callback){
-        this.chats
-        .where('room', '==', 'gaming') //complex querys - this is to query only specified data
+        this.unsub = this.chats //this returns a function
+        .where('room', '==', this.room) // or 'gaming'  //complex querys - this is to query only specified data
         .orderBy('created_at')//this orders the data by time etc
-            .onSnapshot(snapshot =>{
-                snapshot.docChanges().forEach(change =>{ //gets every chnage on the documents
-                    if(change.type === 'added'){
-                        callback(change.doc.data())//get the documents data from the database
+        .onSnapshot(snapshot =>{
+            snapshot.docChanges().forEach(change =>{ //gets every chnage on the documents
+                if(change.type === 'added'){
+                    callback(change.doc.data())//get the documents data from the database
                     }
-
                 });
             });
     }
 
+    //update username
+    UpdateName(username){
+        this.username = username
+    }
 
+    //update room
+    UpdateRoom(room){
+        this.room = room;
+        console.log('room updated');
+        if(this.unsub){ //this is to check if the unsub has a value
+            this.unsub();
+        }
+    }
 
 }
 
 
-const chat1 = new Chatroom('gaming', 'kev');
 
-//create new chat
-chat1.getChats(data =>{
-    console.log(data);
-});
+
