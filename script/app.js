@@ -2,12 +2,13 @@
 const chatlist = document.querySelector('.chat-list');
 const newChat = document.querySelector('.new-chat');
 const newName = document.querySelector('.new-name');
+const UpdateNameUI = document.querySelector('.updatename');
 
 
-
+//Send message to database
 newChat.addEventListener('submit', e =>{
     e.preventDefault();
-    
+
     const message = newChat.message.value.trim();
 
     //1.bare in mind that the whole page has runned already, so can use (chat1) instance from below
@@ -15,9 +16,8 @@ newChat.addEventListener('submit', e =>{
     chat1.addChat(message)
     .then(()=> newChat.reset()) //clear the field after submiting
     .catch(err =>console.log(err));
-
-    chat1.UpdateName(storedName);
 });
+
 
 //Update username
 newName.addEventListener('submit', e=>{
@@ -25,12 +25,14 @@ newName.addEventListener('submit', e=>{
 
     const name = newName.username.value;
 
-    localStorage.setItem('username', name);
+    newName.reset();
+    const showName = chat1.UpdateName(name);
 
-    storedName = localStorage.getItem('username');
+    UpdateNameUI.innerHTML = "Name has been Updated";
 
-    console.log(storedName);
-    
+    setTimeout(() => {
+        UpdateNameUI.innerHTML = "";
+    }, 3000);
 
 });
 
@@ -39,7 +41,16 @@ newName.addEventListener('submit', e=>{
 //Class instances
 const chatui = new ChatUI(chatlist); //used to add to <li> tags
 
-const chat1 = new Chatroom('gaming', 'kev');
+let SavedName = localStorage.getItem('username');
+
+if(!SavedName){
+    SavedName = 'Anonymous';
+}else{
+    SavedName;
+}
+
+
+const chat1 = new Chatroom('gaming', SavedName);
 
 
 
