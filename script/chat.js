@@ -23,7 +23,7 @@ class Chatroom{
             message,
             room: this.room,
             username: this.username,
-            created_at: firebase.firestore.Timestamp.fromDate(now)
+            created_at: firebase.firestore.Timestamp.fromDate(now)//get time from firebase
         };
 
         //Add data to firebase
@@ -49,7 +49,7 @@ class Chatroom{
 
     //update username
     UpdateName(username){
-        this.username = username
+        this.username = username;
     }
 
     //update room
@@ -58,6 +58,8 @@ class Chatroom{
         console.log('room updated');
         if(this.unsub){ //this is to check if the unsub has a value
             this.unsub();
+
+        //this.unsub means, remove from present room to new set room
         }
     }
 
