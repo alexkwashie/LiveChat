@@ -3,6 +3,7 @@ const chatlist = document.querySelector('.chat-list');
 const newChat = document.querySelector('.new-chat');
 const newName = document.querySelector('.new-name');
 const UpdateNameUI = document.querySelector('.updatename');
+const chatRooms = document.querySelector('.chat-rooms');
 
 
 //Send message to database
@@ -37,10 +38,24 @@ newName.addEventListener('submit', e=>{
 });
 
 
+//Update chat Room
+chatRooms.addEventListener('click', e =>{
+    if(e.target.tagName === 'BUTTON'){
+        chatui.clear();
+        chat1.UpdateRoom(e.target.getAttribute('id')) //set updatedRoom arg with the buttons id name
+        chat1.getChats(data =>{
+            chatui.render(data);
+        });
+    }
+
+})
+
 
 //Class instances
 const chatui = new ChatUI(chatlist); //used to add to <li> tags
 
+
+//Saving updated name in LocalStorage
 let SavedName = localStorage.getItem('username');
 
 if(!SavedName){
@@ -49,8 +64,8 @@ if(!SavedName){
     SavedName;
 }
 
-
-const chat1 = new Chatroom('gaming', SavedName);
+//class instance
+const chat1 = new Chatroom('general', SavedName);
 
 
 

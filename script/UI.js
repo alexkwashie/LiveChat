@@ -6,6 +6,12 @@ class ChatUI{
         this.list = list;
     }
 
+    
+    clear(){
+        this.list.innerHTML ="";
+    }
+
+
     render(data){
         const time = dateFns.distanceInWordsToNow(
             data.created_at.toDate(),
