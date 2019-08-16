@@ -6,7 +6,7 @@ class ChatUI{
         this.list = list;
     }
 
-    
+
     clear(){
         this.list.innerHTML ="";
     }
