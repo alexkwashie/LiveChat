@@ -8,3 +8,11 @@
     font-size: 11px;
     color: rgb(121, 118, 118);
 }
+
+.chat-window{
+    overflow: auto;
+    height: 320px;
+    /*makes overflow box scroll to buttom automatically*/
+    display: flex;
+    flex-direction: column-reverse;
+}
